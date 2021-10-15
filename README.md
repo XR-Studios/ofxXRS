@@ -1,0 +1,2 @@
+# ofxXRS
+XRS OpenFrameworks Addon
