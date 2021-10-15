@@ -63,6 +63,8 @@ class ofxXRSTheme{
             this->layout.iconSize *= multiplier;
             this->layout.breakHeight *= (multiplier / 2.0f);
             this->layout.width *= multiplier;
+			this->layout.labelWidth *= multiplier;
+			this->layout.labelMargin *= multiplier;
             this->layout.pad2d.height = static_cast<int>(static_cast<float>(this->layout.pad2d.height) * (multiplier * 1.25));
             this->layout.pad2d.lineWeight = static_cast<int>(static_cast<float>(this->layout.pad2d.lineWeight) * multiplier);
             this->layout.pad2d.ballSize = static_cast<int>(static_cast<float>(this->layout.pad2d.ballSize) * (multiplier / 2.0f));
