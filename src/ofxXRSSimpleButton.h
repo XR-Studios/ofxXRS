@@ -177,7 +177,7 @@ public:
         if (defalut < min_v || defalut > max_v) { d_v = (max_v - min_v)/2.0; }
         else { d_v = defalut; }
         m_v = (max_v - min_v) / s_v;
-        v = ofMap(d_v, min_v, max_v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidht());
+        v = ofMap(d_v, min_v, max_v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidth());
         sliderButton->setPos(v, sliderButton->getY());
         
         if (ofGetTargetPlatform() == OF_TARGET_IOS) {
@@ -207,11 +207,11 @@ public:
             useCountButton = true;
             minusButton = new ofxXRSSimpleButton();
             plusButton = new ofxXRSSimpleButton();
-            minusButton->setup(s_rect.x + s_rect.getWidth() + 10, s_rect.y, sliderButton->getWidht(), sliderButton->getHeight(), false, true);
+            minusButton->setup(s_rect.x + s_rect.getWidth() + 10, s_rect.y, sliderButton->getWidth(), sliderButton->getHeight(), false, true);
             
-            plusButton->setup(minusButton->getX() + minusButton->getWidht() + 10, s_rect.y, sliderButton->getWidht(), sliderButton->getHeight(), false, true);
-            minusButton->setName("-", minusButton->getWidht()/2 - 3, -3);
-            plusButton->setName("+", plusButton->getWidht()/2 - 3, -3);
+            plusButton->setup(minusButton->getX() + minusButton->getWidth() + 10, s_rect.y, sliderButton->getWidth(), sliderButton->getHeight(), false, true);
+            minusButton->setName("-", minusButton->getWidth()/2 - 3, -3);
+            plusButton->setName("+", plusButton->getWidth()/2 - 3, -3);
         }
         plusButton->show();
         minusButton->show();
@@ -241,12 +241,12 @@ public:
             if (minusButton->getIsSelect()) {
                 d_v -= m_v;
                 if (d_v <= min_v) d_v = min_v;
-                v = ofMap(d_v, min_v, max_v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidht());
+                v = ofMap(d_v, min_v, max_v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidth());
                 sliderButton->setPos(v, sliderButton->getY());
             }else if (plusButton->getIsSelect()){
                 d_v += m_v;
                 if (d_v >= max_v) d_v = max_v;
-                v = ofMap(d_v, min_v, max_v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidht());
+                v = ofMap(d_v, min_v, max_v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidth());
                 sliderButton->setPos(v, sliderButton->getY());
             }
         }
@@ -262,10 +262,10 @@ public:
     
     void setButtonPos(int x, int y){
         if (y >= s_rect.y && y <= s_rect.y + s_rect.getHeight() && x >= s_rect.x && x <= s_rect.x + s_rect.getWidth()) {
-            v = x - sliderButton->getWidht()/2;
+            v = x - sliderButton->getWidth()/2;
             if (v <= s_rect.x) v = s_rect.x;
-            if (v >= s_rect.x + s_rect.getWidth() - sliderButton->getWidht()) v = s_rect.x + s_rect.getWidth() - sliderButton->getWidht();
-            d_v = ofMap(v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidht(), min_v, max_v);
+            if (v >= s_rect.x + s_rect.getWidth() - sliderButton->getWidth()) v = s_rect.x + s_rect.getWidth() - sliderButton->getWidth();
+            d_v = ofMap(v, s_rect.x, s_rect.x + s_rect.getWidth() - sliderButton->getWidth(), min_v, max_v);
             sliderButton->setPos(v, sliderButton->getY());
         }
     }
