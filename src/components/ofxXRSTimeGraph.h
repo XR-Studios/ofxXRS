@@ -217,6 +217,16 @@ class ofxXRSValuePlotter : public ofxXRSTimeGraph {
         {
             return new ofxXRSValuePlotter("X", 0, 0);
         }
+
+        void setMin(float min) {
+            mMin = min;
+            setValue((max+min)/2);
+        }
+
+        void setMax(float max) {
+            mMax = max;
+            setValue((max+min)/2);
+        }
     
         void setRange(float min, float max)
         {
