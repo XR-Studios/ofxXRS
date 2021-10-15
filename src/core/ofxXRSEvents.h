@@ -10,6 +10,7 @@ class ofxXRSColorPicker;
 class ofxXRSMatrix;
 class ofxXRSScrollView;
 class ofxXRSScrollViewItem;
+class ofxXRSSimpleButton;
 
 enum ofxXRSEventType
 {
@@ -42,8 +43,16 @@ class ofxXRSButtonEvent{
         ofxXRSButtonEvent(ofxXRSButton* t)
         {
             target = t;
+            targetSimple = nullptr;
+        }
+
+        ofxXRSButtonEvent(ofxXRSSimpleButton* t) 
+        {
+            targetSimple = t;
+            target = nullptr;
         }
     ofxXRSButton* target;
+    ofxXRSSimpleButton* targetSimple;
 };
 
 class ofxXRSToggleEvent{
@@ -52,10 +61,19 @@ class ofxXRSToggleEvent{
         ofxXRSToggleEvent(ofxXRSToggle* t, bool e = false)
         {
             target = t;
+            targetSimple = nullptr;
+            checked = e;
+        }
+
+        ofxXRSToggleEvent(ofxXRSSimpleButton* t, bool e = false) 
+        {
+            target = nullptr;
+            targetSimple = t;
             checked = e;
         }
     bool checked;
     ofxXRSToggle* target;
+    ofxXRSSimpleButton* targetSimple;
 };
 
 class ofxXRSSliderEvent{
