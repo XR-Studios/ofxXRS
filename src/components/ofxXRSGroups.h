@@ -498,9 +498,13 @@ class ofxXRSDropdown : public ofxXRSGroup {
             return static_cast<ofxXRSDropdownOption*>(children[index]);
         }
     
-        ofxXRSDropdownOption* getSelected()
+        ofxXRSDropdownOption* getSelectedObj()
         {
             return static_cast<ofxXRSDropdownOption*>(children[mOption]);
+        }
+
+		string getSelected() {
+			return getSelectedObj()->getLabel();
         }
     
         void dispatchEvent()
