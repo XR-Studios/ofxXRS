@@ -126,9 +126,10 @@ public:
     
     float getX() const { return b_rect.x; }
     float getY() const { return b_rect.y; }
-    float getWidht() const { return b_rect.width; }
+    float getWidth() const { return b_rect.width; }
     float getHeight() const {return b_rect.height; }
 	ofColor getColor() const { return b_c; }
+    
 
 	ofEvent<void> mousePressedEvent;
 };
