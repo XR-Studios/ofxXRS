@@ -31,7 +31,7 @@ class ofxXRSBreak : public ofxXRSComponent{
             ofPopStyle();
         }
     
-        float getHeight()
+        int getHeight()
         {
             return mStyle.height;
         }
