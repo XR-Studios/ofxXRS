@@ -377,6 +377,7 @@
 /*public */void ofxXRSSimpleButton::mousePressed(float x, float y)
 {
     if (isInside(x, y)) {
+		ofxXRSButtonEvent e = ofxXRSButtonEvent(this);
 		ofNotifyEvent(mousePressedEvent, this);
         buttonAction(true);
     }
@@ -386,7 +387,12 @@
 /*public */void ofxXRSSimpleButton::mouseReleased(){
     if (b_type == TYPE_BUTTON) { bSelect = bToggle = false; }
     else if (b_type == TYPE_TOGGLE) { bSelect = false; }
-
+	if (buttonEventCallback != nullptr) {
+		ofxXRSButtonEvent e(this);
+		buttonEventCallback(e);
+	} else {
+		std::cout << "ofxXRSSimpleButton::butonEventCallback is null" << std::endl;
+	}
 }
 
 //--------------------------------------------------------------
@@ -488,6 +494,12 @@
 {
     if (b_type == TYPE_BUTTON) { bSelect = bToggle = false; }
     else if (b_type == TYPE_TOGGLE) { bSelect = false; }
+	if (buttonEventCallback != nullptr) {
+		ofxXRSButtonEvent e(this);
+		buttonEventCallback(e);
+	} else {
+		std::cout << "ofxXRSSimpleButton::butonEventCallback is null" << std::endl;
+	}
 }
 
 //--------------------------------------------------------------

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxXRS.h"
 
 class ofxXRSSimpleButton {
 
@@ -132,6 +133,17 @@ public:
     
 
 	ofEvent<void> mousePressedEvent;
+	typedef std::function<void(ofxXRSButtonEvent)> onButtonEventCallback;
+	onButtonEventCallback buttonEventCallback;
+
+	template<typename T, typename args, class ListenerClass>
+	void onButtonEvent(T* owner, void (ListenerClass::*listenerMethod)(args)) {
+		buttonEventCallback = std::bind(listenerMethod, owner, std::placeholders::_1);
+	}
+
+	void onButtonEvent(onButtonEventCallback callback) {
+		buttonEventCallback = callback;
+	}
 };
 
 class ofxSimpleSlider{
