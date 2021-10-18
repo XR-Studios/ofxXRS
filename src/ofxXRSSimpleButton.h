@@ -130,6 +130,7 @@ public:
     float getWidth() const { return b_rect.width; }
     float getHeight() const {return b_rect.height; }
 	ofColor getColor() const { return b_c; }
+    string getName() const { return b_info_text; }
     
 
 	ofEvent<void> mousePressedEvent;
