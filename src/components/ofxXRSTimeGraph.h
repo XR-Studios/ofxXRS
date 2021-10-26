@@ -212,6 +212,11 @@ class ofxXRSValuePlotter : public ofxXRSTimeGraph {
             setRange(min, max);
             mType = ofxXRSType::VALUE_PLOTTER;
         }
+
+        ofxXRSValuePlotter(ofParameter<float>& f) : ofxXRSValuePlotter(f.getName(), f.getMin(), f.getMax()) {
+            mParamF = &f;
+            mParamF->addListener(this, &ofxXRSValuePlotter::onParam);
+        }
     
         static ofxXRSValuePlotter* getInstance()
         {
@@ -250,6 +255,10 @@ class ofxXRSValuePlotter : public ofxXRSTimeGraph {
                 mVal = mMax;
             }   else if (mVal < mMin){
                 mVal = mMin;
+            }
+
+            if(mParamF != nullptr) {
+                mParamF->set(mVal);
             }
         }
     
@@ -291,8 +300,14 @@ class ofxXRSValuePlotter : public ofxXRSTimeGraph {
         float mMin;
         float mMax;
         float mSpeed;
+        ofParameter<float>* mParamF = nullptr;
+
+        void onParam(float& value) {
+            mVal = value;
+            if (mVal > mMax){
+                mVal = mMax;
+            }   else if (mVal < mMin){
+                mVal = mMin;
+            }
+        }
 };
-
-
-
-

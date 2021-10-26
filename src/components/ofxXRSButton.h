@@ -80,6 +80,11 @@ class ofxXRSToggle : public ofxXRSButton {
             mType = ofxXRSType::TOGGLE;
             setTheme(ofxXRSComponent::getTheme());
         }
+
+        ofxXRSToggle(ofParameter<bool>& b) : ofxXRSToggle(b.getName(), b.get()) {
+            mParamB = &b;
+            mParamB->addListener(this, &ofxXRSToggle::onParamB);
+        }
     
         void setTheme(const ofxXRSTheme* theme)
         {
@@ -127,11 +132,17 @@ class ofxXRSToggle : public ofxXRSButton {
                 ofPopStyle();
             }
         }
+
+        void dispatchToggleEvent() {
+            if(mParamB != nullptr) {
+                mParamB->set(mChecked);
+            }
+            dispatchEvent();
+        }
     
         void dispatchEvent()
         {
             if (toggleEventCallback == nullptr) {
-        // attempt to call generic button callback //
                 ofxXRSButton::dispatchEvent();
             }   else {
                 toggleEventCallback(ofxXRSToggleEvent(this, mChecked));
@@ -147,13 +158,18 @@ class ofxXRSToggle : public ofxXRSButton {
             mChecked = !mChecked;
             ofxXRSComponent::onFocusLost();
             ofxXRSComponent::onMouseRelease(m);
-            dispatchEvent();
+            dispatchToggleEvent();
         }
     
     private:
         bool mChecked;
         shared_ptr<ofImage> radioOn;
         shared_ptr<ofImage> radioOff;
+        ofParameter<bool>* mParamB = nullptr;
+
+        void onParamB(bool& b) {
+            setChecked(b);
+        }
 
 };
 

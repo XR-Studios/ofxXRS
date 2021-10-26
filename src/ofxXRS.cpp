@@ -646,6 +646,20 @@ ofxXRSComponent* ofxXRSPanel::getComponent(ofxXRSType type, string label)
     return NULL;
 }
 
+ofxXRSComponent* ofxXRSPanel::getComponent(string label) {
+    for (size_t i = 0; i < items.size(); i++) {
+        ofxXRSComponent* item = items[i];
+        if(item->is(label)) return item;
+
+        // iterate over item's children and return the first match we find //
+        for (size_t j = 0; j < item->children.size(); j++) {
+            if(item->children[j]->is(label)) return item->children[j];
+        }
+    }
+
+    return NULL;
+}
+
 /*
     event callbacks
 */

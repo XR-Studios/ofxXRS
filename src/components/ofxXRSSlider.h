@@ -20,12 +20,14 @@ class ofxXRSSlider : public ofxXRSComponent {
         }
     
         ofxXRSSlider(string label, float min, float max) : ofxXRSSlider(label, min, max, (max+min)/2) {}
+
         ofxXRSSlider(ofParameter<int> & p) : ofxXRSSlider(p.getName(), p.getMin(), p.getMax(), p.get()) {
             mParamI = &p;
             setPrecision(0);
             calculateScale();
             mParamI->addListener(this, &ofxXRSSlider::onParamI);
         }
+        
         ofxXRSSlider(ofParameter<float> & p) : ofxXRSSlider(p.getName(), p.getMin(), p.getMax(), p.get()) {
             mParamF = &p;
             setPrecision(2);
@@ -262,7 +264,6 @@ class ofxXRSSlider : public ofxXRSComponent {
     
         void dispatchSliderChangedEvent()
         {
-        // update any bound variables //
             if (mBoundf != nullptr) {
                 *mBoundf = mValue;
             }   else if (mBoundi != nullptr) {
@@ -272,7 +273,6 @@ class ofxXRSSlider : public ofxXRSComponent {
             }   else if (mParamF != nullptr) {
                 mParamF->set(mValue);
             }
-        // dispatch event out to main application //
             dispatchEvent();
         }
 

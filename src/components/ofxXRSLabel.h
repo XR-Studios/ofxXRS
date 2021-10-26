@@ -47,7 +47,7 @@ class ofxXRSLabel : public ofxXRSComponent{
             mType = ofxXRSType::LABEL;
             setTheme(ofxXRSComponent::getTheme());
         }
-    
+
         void setTheme(const ofxXRSTheme* theme)
         {
             setComponentStyle(theme);
@@ -68,6 +68,4 @@ class ofxXRSLabel : public ofxXRSComponent{
         }
     
         static ofxXRSLabel* getInstance() { return new ofxXRSLabel("X"); }
-
-
 };

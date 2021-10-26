@@ -24,6 +24,11 @@ class ofxXRS2dPad : public ofxXRSComponent {
             setBounds(bounds, false);
             ofAddListener(ofEvents().windowResized, this, &ofxXRS2dPad::onWindowResized);
         }
+
+        ofxXRS2dPad(ofParameter<ofPoint>& p) : ofxXRS2dPad(p.getName()) {
+            mParamP = &p;
+            mParamP->addListener(this, &ofxXRS2dPad::onParam);
+        }
     
         ~ofxXRS2dPad()
         {
@@ -101,6 +106,9 @@ class ofxXRS2dPad : public ofxXRSComponent {
     
         void dispatchEvent()
         {
+            if(mParamP != nullptr) {
+                mParamP->set(mWorld);
+            }
             if (pad2dEventCallback != nullptr) {
                 ofxXRS2dPadEvent e(this, mWorld.x, mWorld.y);
                 pad2dEventCallback(e);
@@ -154,6 +162,10 @@ class ofxXRS2dPad : public ofxXRSComponent {
             ofColor line;
             ofColor ball;
         } mColors;
-    
+
+        ofParameter<ofPoint>* mParamP = nullptr;
+        void onParam(ofPoint& value) {
+            setPoint(value);
+        }
 };
     

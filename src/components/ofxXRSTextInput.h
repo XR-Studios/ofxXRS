@@ -13,6 +13,11 @@ class ofxXRSTextInput : public ofxXRSComponent {
             mType = ofxXRSType::TEXT_INPUT;
             setTheme(ofxXRSComponent::getTheme());
         }
+
+        ofxXRSTextInput(ofParameter<string>& str) : ofxXRSTextInput(str.getName(), str.get()) {
+            mParamStr = &str;
+            mParamStr->addListener(this, &ofxXRSTextInput::onParamStr);
+        }
     
         void setTheme(const ofxXRSTheme* theme)
         {
@@ -72,6 +77,13 @@ class ofxXRSTextInput : public ofxXRSComponent {
         {
             return mInput.hitTest(m);
         }
+
+        void dispatchTextInputEvent() {
+            if(mParamStr != nullptr) {
+                mParamStr->set(mInput.getText());
+            }
+            dispatchEvent();
+        }
     
         void dispatchEvent()
         {
@@ -109,10 +121,15 @@ class ofxXRSTextInput : public ofxXRSComponent {
         virtual void onInputChanged(ofxXRSInternalEvent e)
         {
         //  dispatch event out to main application //
-            dispatchEvent();
+            dispatchTextInputEvent();
+        }
+
+        void onParamStr(string& str) {
+            setText(str);
         }
     
         ofxXRSTextInputField mInput;
+        ofParameter<string>* mParamStr;
     
 };
 
