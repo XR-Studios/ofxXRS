@@ -1,10 +1,10 @@
 #include "ofxXRSComponent.h"
 
 bool ofxXRSLog::mQuiet = false;
-string ofxXRSTheme::AssetPath = "";
+std::string ofxXRSTheme::AssetPath = "";
 std::unique_ptr<ofxXRSTheme> ofxXRSComponent::theme;
 
-ofxXRSComponent::ofxXRSComponent(string label)
+ofxXRSComponent::ofxXRSComponent(std::string label)
 {
     mName = label;
     mVisible = true;
@@ -41,17 +41,17 @@ int ofxXRSComponent::getIndex()
     return mIndex;
 }
 
-void ofxXRSComponent::setName(string name)
+void ofxXRSComponent::setName(std::string name)
 {
     mName = name;
 }
 
-string ofxXRSComponent::getName()
+std::string ofxXRSComponent::getName()
 {
     return mName;
 }
 
-bool ofxXRSComponent::is(string name)
+bool ofxXRSComponent::is(std::string name)
 {
     return ofToLower(mName) == ofToLower(name);
 }
@@ -63,7 +63,7 @@ ofxXRSType ofxXRSComponent::getType()
 
 const ofxXRSTheme* ofxXRSComponent::getTheme()
 {
-    if (theme == nullptr) theme = make_unique<ofxXRSTheme>(true);
+    if (theme == nullptr) theme = std::make_unique<ofxXRSTheme>(true);
     return theme.get();
 }
 
@@ -211,7 +211,7 @@ bool ofxXRSComponent::getIsExpanded()
     component label
 */
 
-void ofxXRSComponent::setLabel(string label)
+void ofxXRSComponent::setLabel(std::string label)
 {
     mLabel.text = label;
     mLabel.rendered = mLabel.forceUpperCase ? ofToUpper(mLabel.text) : mLabel.rendered = mLabel.text;
@@ -219,7 +219,7 @@ void ofxXRSComponent::setLabel(string label)
     positionLabel();
 }
 
-string ofxXRSComponent::getLabel()
+std::string ofxXRSComponent::getLabel()
 {
     return mLabel.text;
 }

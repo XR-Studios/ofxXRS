@@ -5,12 +5,19 @@ class ofxXRSMatrixButton : public ofxXRSInteractiveObject {
 
     public:
     
-        ofxXRSMatrixButton(int size, int index, bool showLabels)
+        ofxXRSMatrixButton(int size, int index, bool showLabels, std::string label = "")
         {
             mIndex = index;
             mSelected = false;
             mShowLabels = showLabels;
             mRect = ofRectangle(0, 0, size, size);
+			mOriginalWidth = static_cast<float>(size);
+            mHasLabel = false;
+            mLabel = label;
+
+            if(!label.empty()) {
+                mHasLabel = true;
+            }
         }
     
         void setPosition(float x, float y)
@@ -18,19 +25,35 @@ class ofxXRSMatrixButton : public ofxXRSInteractiveObject {
             origin.x = x;
             origin.y = y;
         }
+
+        std::string getLabel() {
+            if(mHasLabel) {
+                return mLabel;
+            }
+
+            return ofToString(mIndex+1);
+        }
     
-        void draw(int x, int y)
+        void draw(int x, int y)	
         {
-            mRect.x = x + origin.x;
+			mRect.x = x + origin.y;
             mRect.y = y + origin.y;
             ofPushStyle();
-                ofFill();
-                ofSetColor(mBkgdColor);
-                ofDrawRectangle(mRect);
-                if (mShowLabels) {
-                    ofSetColor(mLabelColor);
-                    mFont->draw(ofToString(mIndex+1), mRect.x + mRect.width/2 - mFontRect.width/2, mRect.y + mRect.height/2 + mFontRect.height/2);
-                }
+            ofFill();
+            ofSetColor(mBkgdColor);
+            ofDrawRectangle(mRect);
+            if (mShowLabels) {
+                ofSetColor(mLabelColor);
+                if(!mHasLabel) {
+                	mFont->draw(ofToString(mIndex+1), mRect.x + mRect.width/2 - mFontRect.width/2, mRect.y + mRect.height/2 + mFontRect.height/2);
+                } else {
+                	const float strWidth = mFont->width(mLabel);
+                	mRect.setWidth(mOriginalWidth + strWidth);
+                	mFont->draw(mLabel,
+						static_cast<int>((mRect.x + mRect.width / 2.0f - mFontRect.width / 2.0f) - (strWidth / 2.0f)),
+						static_cast<int>(mRect.y + mRect.height / 2.0f + mFontRect.height / 2.0f));
+                   }
+               }
             ofPopStyle();
         }
     
@@ -48,10 +71,34 @@ class ofxXRSMatrixButton : public ofxXRSInteractiveObject {
                 onMouseOut();
             }
         }
+
+		bool isMouseOver() {
+			bool result = mRect.inside(ofGetMouseX(), ofGetMouseY());
+
+			/*
+			std::cout << "MouseX: " << ofGetMouseX() << "\tMouseY: " << ofGetMouseY() << std::endl;
+			std::cout << "mRect x: " << mRect.getX() << "\tmRect y: " << mRect.getY() << std::endl;
+			std::cout << "mRect Width: " << mRect.getWidth() << std::endl;
+			std::cout << "mRect Pos: " << mRect.position << std::endl;
+			std::cout << "mRect Area: " << mRect.getArea() << std::endl;
+			std::cout << "mRect Right: " << mRect.getRight() << std::endl;
+			std::cout << "Result: " << result << std::endl;
+			*/
+
+			return result;
+        }
     
         int getIndex()
         {
             return mIndex;
+        }
+
+		float getWidth() {
+			return mRect.getWidth();
+        }
+
+		void setWidth(float width) {
+			mRect.setWidth(width);
         }
     
         void setSelected(bool selected)
@@ -62,6 +109,19 @@ class ofxXRSMatrixButton : public ofxXRSInteractiveObject {
         bool getSelected()
         {
             return mSelected;
+        }
+
+		float getOriginalWidth() {
+			return mOriginalWidth;
+        }
+
+		void setLabel(const std::string label) {
+			mLabel = label;
+			mHasLabel = true;
+        }
+
+		void setIndex(int index) {
+			mIndex = index;
         }
     
         void onMouseOut()
@@ -86,7 +146,7 @@ class ofxXRSMatrixButton : public ofxXRSInteractiveObject {
     
         void setTheme(const ofxXRSTheme* theme)
         {
-            mFont = theme->font.ptr;
+			mFont = theme->font.ptr;
             mFontRect = mFont->rect(ofToString(mIndex+1));
             mBkgdColor = theme->color.matrix.normal.button;
             mLabelColor = theme->color.matrix.normal.label;
@@ -102,14 +162,17 @@ class ofxXRSMatrixButton : public ofxXRSInteractiveObject {
         int x;
         int y;
         int mIndex;
+		float mOriginalWidth;
+        std::string mLabel;
         ofPoint origin;
         ofRectangle mRect;
         ofColor mBkgdColor;
         ofColor mLabelColor;
         bool mSelected;
         bool mShowLabels;
+        bool mHasLabel;
         ofRectangle mFontRect;
-        shared_ptr<ofxSmartFont> mFont;
+        std::shared_ptr<ofxSmartFont> mFont;
         struct {
             struct{
                 ofColor label;
@@ -130,25 +193,49 @@ class ofxXRSMatrix : public ofxXRSComponent {
 
     public:
     
-        ofxXRSMatrix(string label, int numButtons, bool showLabels = false) : ofxXRSComponent(label)
+        ofxXRSMatrix(std::string label, int numButtons, bool showLabels = false) : ofxXRSComponent(label)
         {
             mRadioMode = false;
+			mCustomized = false;
             mNumButtons = numButtons;
             mShowLabels = showLabels;
             mType = ofxXRSType::MATRIX;
             setTheme(ofxXRSComponent::getTheme());
         }
     
-        void setTheme(const ofxXRSTheme* theme)
+        void setTheme(const ofxXRSTheme* theme) override
         {
             setComponentStyle(theme);
             mFillColor = theme->color.inputAreaBackground;
             mButtonSize = theme->layout.matrix.buttonSize;
             mButtonPadding = theme->layout.matrix.buttonPadding;
             mStyle.stripe.color = theme->stripe.matrix;
-            attachButtons(theme);
+        	attachButtons(theme);
             setWidth(theme->layout.width, theme->layout.labelWidth);
         }
+
+		void addButton(const ofxXRSTheme* theme, int size, bool showLabel, std::string label = "") {
+			btns.emplace_back(*new ofxXRSMatrixButton(size, mNumButtons, !label.empty()));
+			btns[mNumButtons].setTheme(theme);
+			btns[mNumButtons].onInternalEvent(this, &ofxXRSMatrix::onButtonSelected);
+			btns[mNumButtons].setPosition(mButtonPadding, mButtonPadding);
+
+			if (!label.empty()) {
+				btns[mNumButtons].setLabel(label);
+				btns[mNumButtons].setTheme(theme);
+			}
+
+			mNumButtons++;
+        }
+
+		void setLabelAtIndex(int index, const std::string label) {
+			ofxXRSMatrixButton* btn = getButtonAtIndex(index);
+			btn->setLabel(label);
+
+			const float strWidth = mFont->width(label);
+			btn->setWidth(btn->getOriginalWidth() + strWidth);
+			labels.at(index) = label;
+		}
     
         void setWidth(int width, float labelWidth)
         {
@@ -197,8 +284,14 @@ class ofxXRSMatrix : public ofxXRSComponent {
             ofPushStyle();
                 ofxXRSComponent::draw();
                 ofSetColor(mFillColor);
-                ofDrawRectangle(mMatrixRect);
-                for(size_t i=0; i<btns.size(); i++) btns[i].draw(x+mLabel.width, y);
+				ofDrawRectangle(mMatrixRect);
+
+				float prevOffset = 0.0f;
+				for (size_t i = 0; i < btns.size(); i++) {
+					btns[i].draw(x + mLabel.width + prevOffset, y);
+					prevOffset += btns[i].getWidth() + mButtonPadding;
+				}
+
             ofPopStyle();
         }
     
@@ -207,16 +300,16 @@ class ofxXRSMatrix : public ofxXRSComponent {
             for (size_t i=0; i<btns.size(); i++) btns[i].setSelected(false);
         }
     
-        void setSelected(vector<int> v)
+        void setSelected(std::vector<int> v)
         {
             clear();
             for (size_t i=0; i<v.size(); i++) btns[v[i]].setSelected(true);
             mLastItemSelected = &btns[v.back()];
         }
-    
-        vector<int> getSelected()
+
+        std::vector<int> getSelected()
         {
-            vector<int> selected;
+	        std::vector<int> selected;
             for(size_t i=0; i<btns.size(); i++) if (btns[i].getSelected()) selected.push_back(i);
             return selected;
         }
@@ -224,6 +317,26 @@ class ofxXRSMatrix : public ofxXRSComponent {
         ofxXRSMatrixButton* getButtonAtIndex(int index)
         {
             return &btns[index];
+        }
+
+		void removeButtonAtIndex(int index) {
+			mNumButtons--;
+			for(int i = index; i < mNumButtons - 1; i++) {
+				btns.at(i).setLabel(btns.at(i + 1).getLabel());
+			}
+			btns.erase(btns.begin() + index);
+			labels.erase(labels.begin() + index);
+			draw();
+
+			std::cout << "LABELS: " << std::endl;
+			for(auto& label : labels) {
+				std::cout << label << std::endl;
+			}
+			std::cout << "========" << std::endl;
+		}
+
+		int getNumButtons() {
+			return mNumButtons;
         }
     
         void dispatchEvent()
@@ -260,19 +373,46 @@ class ofxXRSMatrix : public ofxXRSComponent {
         // deselect all buttons save the one that was selected //
                 for(size_t i=0; i<btns.size(); i++) btns[i].setSelected(e.index == i);
             }
-            mLastItemSelected = &btns[e.index];
+			if (btns.size() > e.index) {
+				mLastItemSelected = &btns.at(e.index);
+			}
             dispatchEvent();
         }
     
         void attachButtons(const ofxXRSTheme* theme)
         {
-            btns.clear();
-            for(int i=0; i < mNumButtons; i++) {
-                ofxXRSMatrixButton btn(mButtonSize, i, mShowLabels);
-                btn.setTheme(theme);
-                btn.onInternalEvent(this, &ofxXRSMatrix::onButtonSelected);
-                btns.push_back(btn);
-            }
+			std::vector<std::string> oldLabels = labels;
+        	btns.clear();
+			labels.clear();
+
+        	for (size_t i = 0; i < mNumButtons; i++) {
+				if (i < oldLabels.size()) {
+					ofxXRSMatrixButton btn(mButtonSize, i, mShowLabels, oldLabels.at(i));
+					btn.setTheme(theme);
+					btn.onInternalEvent(this, &ofxXRSMatrix::onButtonSelected);
+					btns.push_back(btn);
+					labels.push_back(btn.getLabel());
+				} else {
+					ofxXRSMatrixButton btn(mButtonSize, i, mShowLabels);
+					btn.setTheme(theme);
+					btn.onInternalEvent(this, &ofxXRSMatrix::onButtonSelected);
+					btns.push_back(btn);
+					labels.push_back(btn.getLabel());
+				}
+        	}
+
+			std::cout << "============" << std::endl;
+			std::cout << "OLDLABELS: " << std::endl;
+			for (auto& label : oldLabels) {
+				std::cout << label << std::endl;
+			}
+			std::cout << "NEW LABELS: " << std::endl;
+			for (auto& label : labels) {
+				std::cout << label << std::endl;
+			}
+			std::cout << "==========" << std::endl;
+
+			
         }
     
     private:
@@ -282,9 +422,11 @@ class ofxXRSMatrix : public ofxXRSComponent {
         int mButtonPadding;
         bool mRadioMode;
         bool mShowLabels;
+		bool mCustomized;
         ofColor mFillColor;
         ofRectangle mMatrixRect;
-        vector<ofxXRSMatrixButton> btns;
+        std::vector<ofxXRSMatrixButton> btns;
+        std::vector<std::string> labels;
         ofxXRSMatrixButton* mLastItemSelected;
 };
 

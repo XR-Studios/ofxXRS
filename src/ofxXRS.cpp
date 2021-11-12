@@ -1,7 +1,7 @@
 #include "ofxXRS.h"
 
 ofxXRSPanel* ofxXRSPanel::mActiveGui;
-vector<ofxXRSPanel*> ofxXRSPanel::mGuis;
+std::vector<ofxXRSPanel*> ofxXRSPanel::mGuis;
 
 ofxXRSPanel::ofxXRSPanel(int x, int y)
 {
@@ -25,6 +25,10 @@ ofxXRSPanel::~ofxXRSPanel()
     ofRemoveListener(ofEvents().draw, this, &ofxXRSPanel::onDraw, OF_EVENT_ORDER_AFTER_APP + mIndex);
     ofRemoveListener(ofEvents().update, this, &ofxXRSPanel::onUpdate, OF_EVENT_ORDER_BEFORE_APP - mIndex);
     ofRemoveListener(ofEvents().windowResized, this, &ofxXRSPanel::onWindowResized, OF_EVENT_ORDER_BEFORE_APP);
+}
+
+ofRectangle ofxXRSPanel::getRect() {
+	return mGuiBounds;
 }
 
 void ofxXRSPanel::init()
@@ -209,12 +213,12 @@ ofPoint ofxXRSPanel::getPosition()
     return ofPoint(mPosition.x, mPosition.y);
 }
 
-void ofxXRSPanel::setAssetPath(string path)
+void ofxXRSPanel::setAssetPath(std::string path)
 {
     ofxXRSTheme::AssetPath = path;
 }
 
-string ofxXRSPanel::getAssetPath()
+std::string ofxXRSPanel::getAssetPath()
 {
     return ofxXRSTheme::AssetPath;
 }
@@ -223,7 +227,7 @@ string ofxXRSPanel::getAssetPath()
     add component methods
 */
 
-ofxXRSHeader* ofxXRSPanel::addHeader(string label, bool draggable)
+ofxXRSHeader* ofxXRSPanel::addHeader(std::string label, bool draggable)
 {
     if (mGuiHeader == nullptr){
         mGuiHeader = new ofxXRSHeader(label, draggable);
@@ -249,14 +253,14 @@ ofxXRSFooter* ofxXRSPanel::addFooter()
     return mGuiFooter;
 }
 
-ofxXRSLabel* ofxXRSPanel::addLabel(string label)
+ofxXRSLabel* ofxXRSPanel::addLabel(std::string label)
 {
     ofxXRSLabel* lbl = new ofxXRSLabel(label);
     attachItem(lbl);
     return lbl;
 }
 
-ofxXRSButton* ofxXRSPanel::addButton(string label)
+ofxXRSButton* ofxXRSPanel::addButton(std::string label)
 {
     ofxXRSButton* button = new ofxXRSButton(label);
     button->onButtonEvent(this, &ofxXRSPanel::onButtonEventCallback);
@@ -264,7 +268,7 @@ ofxXRSButton* ofxXRSPanel::addButton(string label)
     return button;
 }
 
-ofxXRSToggle* ofxXRSPanel::addToggle(string label, bool enabled)
+ofxXRSToggle* ofxXRSPanel::addToggle(std::string label, bool enabled)
 {
     ofxXRSToggle* button = new ofxXRSToggle(label, enabled);
     button->onToggleEvent(this, &ofxXRSPanel::onToggleEventCallback);
@@ -288,14 +292,14 @@ ofxXRSSlider* ofxXRSPanel::addSlider(ofParameter<float>& p)
     return slider;
 }
 
-ofxXRSSlider* ofxXRSPanel::addSlider(string label, float min, float max)
+ofxXRSSlider* ofxXRSPanel::addSlider(std::string label, float min, float max)
 {
 // default to halfway between min & max values //
     ofxXRSSlider* slider = addSlider(label, min, max, (max+min)/2);
     return slider;
 }
 
-ofxXRSSlider* ofxXRSPanel::addSlider(string label, float min, float max, float val)
+ofxXRSSlider* ofxXRSPanel::addSlider(std::string label, float min, float max, float val)
 {
     ofxXRSSlider* slider = new ofxXRSSlider(label, min, max, val);
     slider->onSliderEvent(this, &ofxXRSPanel::onSliderEventCallback);
@@ -303,7 +307,7 @@ ofxXRSSlider* ofxXRSPanel::addSlider(string label, float min, float max, float v
     return slider;
 }
 
-ofxXRSTextInput* ofxXRSPanel::addTextInput(string label, string value)
+ofxXRSTextInput* ofxXRSPanel::addTextInput(std::string label, std::string value)
 {
     ofxXRSTextInput* input = new ofxXRSTextInput(label, value);
     input->onTextInputEvent(this, &ofxXRSPanel::onTextInputEventCallback);
@@ -311,7 +315,7 @@ ofxXRSTextInput* ofxXRSPanel::addTextInput(string label, string value)
     return input;
 }
 
-ofxXRSColorPicker* ofxXRSPanel::addColorPicker(string label, ofColor color)
+ofxXRSColorPicker* ofxXRSPanel::addColorPicker(std::string label, ofColor color)
 {
     ofxXRSColorPicker* picker = new ofxXRSColorPicker(label, color);
     picker->onColorPickerEvent(this, &ofxXRSPanel::onColorPickerEventCallback);
@@ -319,21 +323,21 @@ ofxXRSColorPicker* ofxXRSPanel::addColorPicker(string label, ofColor color)
     return picker;
 }
 
-ofxXRSWaveMonitor* ofxXRSPanel::addWaveMonitor(string label, float frequency, float amplitude)
+ofxXRSWaveMonitor* ofxXRSPanel::addWaveMonitor(std::string label, float frequency, float amplitude)
 {
     ofxXRSWaveMonitor* monitor = new ofxXRSWaveMonitor(label, frequency, amplitude);
     attachItem(monitor);
     return monitor;
 }
 
-ofxXRSValuePlotter* ofxXRSPanel::addValuePlotter(string label, float min, float max)
+ofxXRSValuePlotter* ofxXRSPanel::addValuePlotter(std::string label, float min, float max)
 {
     ofxXRSValuePlotter* plotter = new ofxXRSValuePlotter(label, min, max);
     attachItem(plotter);
     return plotter;
 }
 
-ofxXRSDropdown* ofxXRSPanel::addDropdown(string label, vector<string> options)
+ofxXRSDropdown* ofxXRSPanel::addDropdown(std::string label, std::vector<std::string> options)
 {
     ofxXRSDropdown* dropdown = new ofxXRSDropdown(label, options);
     dropdown->onDropdownEvent(this, &ofxXRSPanel::onDropdownEventCallback);
@@ -355,7 +359,7 @@ ofxXRSBreak* ofxXRSPanel::addBreak()
     return brk;
 }
 
-ofxXRS2dPad* ofxXRSPanel::add2dPad(string label)
+ofxXRS2dPad* ofxXRSPanel::add2dPad(std::string label)
 {
     ofxXRS2dPad* pad = new ofxXRS2dPad(label);
     pad->on2dPadEvent(this, &ofxXRSPanel::on2dPadEventCallback);
@@ -363,7 +367,7 @@ ofxXRS2dPad* ofxXRSPanel::add2dPad(string label)
     return pad;
 }
 
-ofxXRS2dPad* ofxXRSPanel::add2dPad(string label, ofRectangle bounds)
+ofxXRS2dPad* ofxXRSPanel::add2dPad(std::string label, ofRectangle bounds)
 {
     ofxXRS2dPad* pad = new ofxXRS2dPad(label, bounds);
     pad->on2dPadEvent(this, &ofxXRSPanel::on2dPadEventCallback);
@@ -371,7 +375,7 @@ ofxXRS2dPad* ofxXRSPanel::add2dPad(string label, ofRectangle bounds)
     return pad;
 }
 
-ofxXRSMatrix* ofxXRSPanel::addMatrix(string label, int numButtons, bool showLabels)
+ofxXRSMatrix* ofxXRSPanel::addMatrix(std::string label, int numButtons, bool showLabels)
 {
     ofxXRSMatrix* matrix = new ofxXRSMatrix(label, numButtons, showLabels);
     matrix->onMatrixEvent(this, &ofxXRSPanel::onMatrixEventCallback);
@@ -379,7 +383,7 @@ ofxXRSMatrix* ofxXRSPanel::addMatrix(string label, int numButtons, bool showLabe
     return matrix;
 }
 
-ofxXRSFolder* ofxXRSPanel::addFolder(string label, ofColor color)
+ofxXRSFolder* ofxXRSPanel::addFolder(std::string label, ofColor color)
 {
     ofxXRSFolder* folder = new ofxXRSFolder(label, color);
     folder->onButtonEvent(this, &ofxXRSPanel::onButtonEventCallback);
@@ -415,7 +419,7 @@ void ofxXRSPanel::attachItem(ofxXRSComponent* item)
     component retrieval methods
 */
 
-ofxXRSLabel* ofxXRSPanel::getLabel(string bl, string fl){
+ofxXRSLabel* ofxXRSPanel::getLabel(std::string bl, std::string fl){
     ofxXRSLabel* o = nullptr;
     if (fl != ""){
         ofxXRSFolder* f = static_cast<ofxXRSFolder*>(getComponent(ofxXRSType::FOLDER, fl));
@@ -431,7 +435,7 @@ ofxXRSLabel* ofxXRSPanel::getLabel(string bl, string fl){
     return o;
 }
 
-ofxXRSButton* ofxXRSPanel::getButton(string bl, string fl)
+ofxXRSButton* ofxXRSPanel::getButton(std::string bl, std::string fl)
 {
     ofxXRSButton* o = nullptr;
     if (fl != ""){
@@ -448,7 +452,7 @@ ofxXRSButton* ofxXRSPanel::getButton(string bl, string fl)
     return o;
 }
 
-ofxXRSToggle* ofxXRSPanel::getToggle(string bl, string fl)
+ofxXRSToggle* ofxXRSPanel::getToggle(std::string bl, std::string fl)
 {
     ofxXRSToggle* o = nullptr;
     if (fl != ""){
@@ -465,7 +469,7 @@ ofxXRSToggle* ofxXRSPanel::getToggle(string bl, string fl)
     return o;
 }
 
-ofxXRSSlider* ofxXRSPanel::getSlider(string sl, string fl)
+ofxXRSSlider* ofxXRSPanel::getSlider(std::string sl, std::string fl)
 {
     ofxXRSSlider* o = nullptr;
     if (fl != ""){
@@ -482,7 +486,7 @@ ofxXRSSlider* ofxXRSPanel::getSlider(string sl, string fl)
     return o;
 }
 
-ofxXRSTextInput* ofxXRSPanel::getTextInput(string tl, string fl)
+ofxXRSTextInput* ofxXRSPanel::getTextInput(std::string tl, std::string fl)
 {
     ofxXRSTextInput* o = nullptr;
     if (fl != ""){
@@ -499,7 +503,7 @@ ofxXRSTextInput* ofxXRSPanel::getTextInput(string tl, string fl)
     return o;
 }
 
-ofxXRS2dPad* ofxXRSPanel::get2dPad(string pl, string fl)
+ofxXRS2dPad* ofxXRSPanel::get2dPad(std::string pl, std::string fl)
 {
     ofxXRS2dPad* o = nullptr;
     if (fl != ""){
@@ -516,7 +520,7 @@ ofxXRS2dPad* ofxXRSPanel::get2dPad(string pl, string fl)
     return o;
 }
 
-ofxXRSColorPicker* ofxXRSPanel::getColorPicker(string cl, string fl)
+ofxXRSColorPicker* ofxXRSPanel::getColorPicker(std::string cl, std::string fl)
 {
     ofxXRSColorPicker* o = nullptr;
     if (fl != ""){
@@ -533,7 +537,7 @@ ofxXRSColorPicker* ofxXRSPanel::getColorPicker(string cl, string fl)
     return o;
 }
 
-ofxXRSWaveMonitor* ofxXRSPanel::getWaveMonitor(string cl, string fl)
+ofxXRSWaveMonitor* ofxXRSPanel::getWaveMonitor(std::string cl, std::string fl)
 {
     ofxXRSWaveMonitor* o = nullptr;
     if (fl != ""){
@@ -550,7 +554,7 @@ ofxXRSWaveMonitor* ofxXRSPanel::getWaveMonitor(string cl, string fl)
     return o;
 }
 
-ofxXRSValuePlotter* ofxXRSPanel::getValuePlotter(string cl, string fl)
+ofxXRSValuePlotter* ofxXRSPanel::getValuePlotter(std::string cl, std::string fl)
 {
     ofxXRSValuePlotter* o = nullptr;
     if (fl != ""){
@@ -567,7 +571,7 @@ ofxXRSValuePlotter* ofxXRSPanel::getValuePlotter(string cl, string fl)
     return o;
 }
 
-ofxXRSMatrix* ofxXRSPanel::getMatrix(string ml, string fl)
+ofxXRSMatrix* ofxXRSPanel::getMatrix(std::string ml, std::string fl)
 {
     ofxXRSMatrix* o = nullptr;
     if (fl != ""){
@@ -584,7 +588,7 @@ ofxXRSMatrix* ofxXRSPanel::getMatrix(string ml, string fl)
     return o;
 }
 
-ofxXRSDropdown* ofxXRSPanel::getDropdown(string dl)
+ofxXRSDropdown* ofxXRSPanel::getDropdown(std::string dl)
 {
     ofxXRSDropdown* o = static_cast<ofxXRSDropdown*>(getComponent(ofxXRSType::DROPDOWN, dl));
     if (o==NULL){
@@ -595,7 +599,7 @@ ofxXRSDropdown* ofxXRSPanel::getDropdown(string dl)
     return o;
 }
 
-ofxXRSFolder* ofxXRSPanel::getFolder(string fl)
+ofxXRSFolder* ofxXRSPanel::getFolder(std::string fl)
 {
     ofxXRSFolder* o = static_cast<ofxXRSFolder*>(getComponent(ofxXRSType::FOLDER, fl));
     if (o==NULL){
@@ -632,7 +636,7 @@ ofxXRSFooter* ofxXRSPanel::getFooter()
     return o;
 }
 
-ofxXRSComponent* ofxXRSPanel::getComponent(ofxXRSType type, string label)
+ofxXRSComponent* ofxXRSPanel::getComponent(ofxXRSType type, std::string label)
 {
     for (size_t i=0; i<items.size(); i++) {
         if (items[i]->getType() == type){
@@ -646,7 +650,7 @@ ofxXRSComponent* ofxXRSPanel::getComponent(ofxXRSType type, string label)
     return NULL;
 }
 
-ofxXRSComponent* ofxXRSPanel::getComponent(string label) {
+ofxXRSComponent* ofxXRSPanel::getComponent(std::string label) {
     for (size_t i = 0; i < items.size(); i++) {
         ofxXRSComponent* item = items[i];
         if(item->is(label)) return item;

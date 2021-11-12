@@ -21,7 +21,7 @@ class ofxXRSTimeGraph : public ofxXRSComponent {
 
     protected:
     
-        ofxXRSTimeGraph(string label) : ofxXRSComponent(label)
+        ofxXRSTimeGraph(std::string label) : ofxXRSComponent(label)
         {
             mDrawFunc = &ofxXRSTimeGraph::drawFilled;
             setTheme(ofxXRSComponent::getTheme());
@@ -117,7 +117,8 @@ class ofxXRSTimeGraph : public ofxXRSComponent {
             ofColor lines;
             ofColor fills;
         } mColor;
-        vector<ofVec2f> pts;
+
+        std::vector<ofVec2f> pts;
         ofRectangle mPlotterRect;
         void (ofxXRSTimeGraph::*mDrawFunc)() = nullptr;
 };
@@ -126,7 +127,7 @@ class ofxXRSWaveMonitor : public ofxXRSTimeGraph {
 
     public:
 
-        ofxXRSWaveMonitor(string label, float frequency, float amplitude) : ofxXRSTimeGraph(label)
+        ofxXRSWaveMonitor(std::string label, float frequency, float amplitude) : ofxXRSTimeGraph(label)
         {
             mFrequencyLimit = 100;
             setAmplitude(amplitude);
@@ -206,7 +207,7 @@ class ofxXRSValuePlotter : public ofxXRSTimeGraph {
 
     public:
 
-        ofxXRSValuePlotter(string label, float min, float max) : ofxXRSTimeGraph(label)
+        ofxXRSValuePlotter(std::string label, float min, float max) : ofxXRSTimeGraph(label)
         {
             mSpeed = 5.0f;
             setRange(min, max);

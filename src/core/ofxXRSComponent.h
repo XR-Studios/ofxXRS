@@ -5,19 +5,19 @@ class ofxXRSComponent : public ofxXRSInteractiveObject
 {
     public:
     
-        ofxXRSComponent(string label);
+        ofxXRSComponent(std::string label);
         virtual ~ofxXRSComponent();
     
         int     getX();
         int     getY();
         void    setIndex(int index);
         int     getIndex();
-        void    setName(string name);
-        string  getName();
-        bool    is(string name);
+        void    setName(std::string name);
+        std::string  getName();
+        bool    is(std::string name);
     
-        void    setLabel(string label);
-        string  getLabel();
+        void    setLabel(std::string label);
+        std::string  getLabel();
         void    setLabelColor(ofColor color);
         ofColor getLabelColor();
         void    setLabelUpperCase(bool toUpper);
@@ -47,8 +47,8 @@ class ofxXRSComponent : public ofxXRSInteractiveObject
         void    setOpacity(float opacity);
         bool    getMouseDown();
         ofxXRSType getType();
-    
-        vector<ofxXRSComponent*> children;
+
+        std::vector<ofxXRSComponent*> children;
     
         virtual void draw();
         virtual void update(bool acceptEvents = true);
@@ -83,7 +83,7 @@ class ofxXRSComponent : public ofxXRSInteractiveObject
         int x;
         int y;
         int mIndex;
-        string mName;
+        std::string mName;
         bool mFocused;
         bool mVisible;
         bool mEnabled;
@@ -92,7 +92,7 @@ class ofxXRSComponent : public ofxXRSInteractiveObject
         ofRectangle mMask;
         ofxXRSType mType;
         ofxXRSPanelAnchor mAnchor;
-        shared_ptr<ofxSmartFont> mFont;
+        std::shared_ptr<ofxSmartFont> mFont;
     
         struct{
             float width;
@@ -121,8 +121,8 @@ class ofxXRSComponent : public ofxXRSInteractiveObject
     
         struct{
             int x;
-            string text;
-            string rendered;
+            std::string text;
+            std::string rendered;
             bool visible;
             ofColor color;
             float width;
@@ -149,7 +149,7 @@ class ofxXRSComponent : public ofxXRSInteractiveObject
     
     private:
     
-        static unique_ptr<ofxXRSTheme> theme;
+        static std::unique_ptr<ofxXRSTheme> theme;
     
 };
 

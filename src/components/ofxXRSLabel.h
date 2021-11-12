@@ -42,7 +42,7 @@ class ofxXRSLabel : public ofxXRSComponent{
 
     public:
         
-        ofxXRSLabel(string label) : ofxXRSComponent(label)
+        ofxXRSLabel(std::string label) : ofxXRSComponent(label)
         {
             mType = ofxXRSType::LABEL;
             setTheme(ofxXRSComponent::getTheme());

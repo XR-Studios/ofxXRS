@@ -5,7 +5,7 @@ class ofxXRSColorPicker : public ofxXRSTextInput {
 
     public:
     
-        ofxXRSColorPicker(string label, ofColor color=ofColor::black) : ofxXRSTextInput(label, "XXXXXX")
+        ofxXRSColorPicker(std::string label, ofColor color=ofColor::black) : ofxXRSTextInput(label, "XXXXXX")
         {
             mColor = color;
             mShowPicker = false;
@@ -206,7 +206,7 @@ class ofxXRSColorPicker : public ofxXRSTextInput {
         ofColor gColor;
     
         struct {
-            shared_ptr<ofImage> image;
+	        std::shared_ptr<ofImage> image;
             ofRectangle rect;
         } rainbow;
     
@@ -216,8 +216,8 @@ class ofxXRSColorPicker : public ofxXRSTextInput {
         ofRectangle gradientRect;
     
         ofVbo vbo;
-        vector<ofVec2f> gPoints;
-        vector<ofFloatColor> gColors;
+        std::vector<ofVec2f> gPoints;
+        std::vector<ofFloatColor> gColors;
     
         void updateTextFieldColors()
         {

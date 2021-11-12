@@ -26,17 +26,17 @@ private:
     
     ofColor b_c;
     ofColor b_t_c;
-    
-    vector<ofFbo> b_img_fbo;
+
+	std::vector<ofFbo> b_img_fbo;
     ofFbo a_img_fbo;
     
     TYPE_BUTTONS b_type;
     BUTTON_SHAPES b_shape;
     
-    string b_info_text;
-    string b_val_text;
-    string b_img_route;
-    string b_img_extension;
+    std::string b_info_text;
+    std::string b_val_text;
+    std::string b_img_route;
+    std::string b_img_extension;
     
     bool useName;
     bool useValue;
@@ -79,14 +79,14 @@ protected:
     void buttonAction(bool b);
     bool isInside(float x, float y);
     
-    int checkExtension(string n);
+    int checkExtension(std::string n);
 public:
     explicit ofxXRSSimpleButton();
     virtual~ofxXRSSimpleButton();
     
     bool setup(float x, float y, float w = 50, float h = 50, bool useEvent = false);
     bool setup(float x, float y, float w, float h, bool useEvent, bool manualRender, TYPE_BUTTONS type = TYPE_BUTTON, BUTTON_SHAPES shape = BUTTON_RECT, const ofColor &c = ofColor::white);
-    bool setup(float x, float y, string imgRoute, bool useAnimation = false, bool useEvent = true, bool manualRender = false, TYPE_BUTTONS type = TYPE_BUTTON);
+    bool setup(float x, float y, std::string imgRoute, bool useAnimation = false, bool useEvent = true, bool manualRender = false, TYPE_BUTTONS type = TYPE_BUTTON);
     
     void setAppear(bool show);
     void setRender(bool magic);
@@ -98,8 +98,8 @@ public:
     void setAlpha(float a);
     void setPos(const ofPoint & p);
     void setPos(float x, float y);
-    void setName(string n, float n_x = 0, float n_y = -10);
-    void setValue(string v, float v_x = 0, float v_y = -10);
+    void setName(std::string n, float n_x = 0, float n_y = -10);
+    void setValue(std::string v, float v_x = 0, float v_y = -10);
     void setFixPos(bool fix);
     void setAsAnimationButton(int time = 500);
     void resetToggle();
@@ -130,7 +130,7 @@ public:
     float getWidth() const { return b_rect.width; }
     float getHeight() const {return b_rect.height; }
 	ofColor getColor() const { return b_c; }
-    string getName() const { return b_info_text; }
+    std::string getName() const { return b_info_text; }
     
 
 	ofEvent<void> mousePressedEvent;
@@ -166,7 +166,7 @@ private:
     bool hideValue;
     ofColor s_c;
     
-    string s_name;
+    std::string s_name;
     
 public:
     explicit ofxSimpleSlider():min_v(0.0), max_v(1.0),d_v(0.5),s_v(100.0),useCountButton(false),hideValue(false),s_c(ofColor::white){}
@@ -177,7 +177,7 @@ public:
         }
         delete sliderButton;
     }
-    void setup(string name, float x, float y, float w, float h, float min, float max, float defalut){
+    void setup(std::string name, float x, float y, float w, float h, float min, float max, float defalut){
         s_name = name;
         s_rect.set(x, y, w, h);
         

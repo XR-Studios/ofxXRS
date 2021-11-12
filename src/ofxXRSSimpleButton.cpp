@@ -79,9 +79,9 @@
                 ofAddListener(ofEvents().mouseDragged, this, &ofxXRSSimpleButton::mouseDragged);
             }
         }
-        
+
         if (!manualRender) {
-            setRender(true);
+			setRender(true);
             ofAddListener(ofEvents().draw, this, &ofxXRSSimpleButton::render);
         }
         
@@ -93,7 +93,7 @@
 }
 
 //--------------------------------------------------------------
-/*public */bool ofxXRSSimpleButton::setup(float x, float y, string imgRoute, bool useAnimation, bool useEvent, bool manualRender, TYPE_BUTTONS type)
+/*public */bool ofxXRSSimpleButton::setup(float x, float y, std::string imgRoute, bool useAnimation, bool useEvent, bool manualRender, TYPE_BUTTONS type)
 {
     setType(type);
     setShape(BUTTON_IMAGE);
@@ -234,7 +234,7 @@
 }
 
 //--------------------------------------------------------------
-/*public */void ofxXRSSimpleButton::setName(string n, float n_x, float n_y){
+/*public */void ofxXRSSimpleButton::setName(std::string n, float n_x, float n_y){
     if (!bAppear) {
         ofLog(OF_LOG_ERROR, "Button is not initialized. First you need to setup.");
         return;
@@ -245,7 +245,7 @@
 }
 
 //--------------------------------------------------------------
-/*public */void ofxXRSSimpleButton::setValue(string v, float v_x, float v_y){
+/*public */void ofxXRSSimpleButton::setValue(std::string v, float v_x, float v_y){
     if (!bAppear) {
         ofLog(OF_LOG_ERROR, "Button is not initialized. First you need to setup.");
         return;
@@ -528,15 +528,15 @@
 }
 
 //--------------------------------------------------------------
-/*protected */int ofxXRSSimpleButton::checkExtension(string n){
+/*protected */int ofxXRSSimpleButton::checkExtension(std::string n){
     int result;
     int extensionFinder[3];
     
-    string extensionType[] = { ".png", ".jpg", ".jpeg" };
+    std::string extensionType[] = { ".png", ".jpg", ".jpeg" };
     
     for(int i = 0; i < 3; i++){
         extensionFinder[i] = n.find(extensionType[i]);
-        if(extensionFinder[i] != string::npos){
+        if(extensionFinder[i] != std::string::npos){
             result = i;
             b_img_extension = extensionType[i];
             b_img_route.append(n,0, extensionFinder[i]);

@@ -5,7 +5,7 @@ class ofxXRS2dPad : public ofxXRSComponent {
 
     public:
     
-        ofxXRS2dPad(string label) : ofxXRSComponent(label)
+        ofxXRS2dPad(std::string label) : ofxXRSComponent(label)
         {
             mPercentX = 0.5f;
             mPercentY = 0.5f;
@@ -15,7 +15,7 @@ class ofxXRS2dPad : public ofxXRSComponent {
             ofAddListener(ofEvents().windowResized, this, &ofxXRS2dPad::onWindowResized);
         }
     
-        ofxXRS2dPad(string label, ofRectangle bounds) : ofxXRSComponent(label)
+        ofxXRS2dPad(std::string label, ofRectangle bounds) : ofxXRSComponent(label)
         {
             mPercentX = 0.5f;
             mPercentY = 0.5f;

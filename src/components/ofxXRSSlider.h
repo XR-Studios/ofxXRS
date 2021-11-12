@@ -6,7 +6,7 @@ class ofxXRSSlider : public ofxXRSComponent {
 
     public:
     
-        ofxXRSSlider(string label, float min, float max, float val) : ofxXRSComponent(label)
+        ofxXRSSlider(std::string label, float min, float max, float val) : ofxXRSComponent(label)
         {
             mMin = min;
             mMax = max;
@@ -19,7 +19,7 @@ class ofxXRSSlider : public ofxXRSComponent {
             setValue(val, false); // don't dispatch a change event when component is constructed //
         }
     
-        ofxXRSSlider(string label, float min, float max) : ofxXRSSlider(label, min, max, (max+min)/2) {}
+        ofxXRSSlider(std::string label, float min, float max) : ofxXRSSlider(label, min, max, (max+min)/2) {}
 
         ofxXRSSlider(ofParameter<int> & p) : ofxXRSSlider(p.getName(), p.getMin(), p.getMax(), p.get()) {
             mParamI = &p;
@@ -307,7 +307,7 @@ class ofxXRSSlider : public ofxXRSComponent {
     
         void setTextInput()
         {
-            string v = ofToString(round(mValue, mPrecision));
+	        std::string v = ofToString(round(mValue, mPrecision));
             if (mValue != mMin && mValue != mMax){
                 size_t p = v.find('.');
                 if (p == -1 && mPrecision != 0){

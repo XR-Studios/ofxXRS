@@ -5,7 +5,7 @@ class ofxXRSButton : public ofxXRSComponent {
 
     public:
     
-        ofxXRSButton(string label) : ofxXRSComponent(label)
+        ofxXRSButton(std::string label) : ofxXRSComponent(label)
         {
             mType = ofxXRSType::BUTTON;
             setTheme(ofxXRSComponent::getTheme());
@@ -74,7 +74,7 @@ class ofxXRSToggle : public ofxXRSButton {
     
     public:
     
-        ofxXRSToggle(string label, bool checked = false) : ofxXRSButton(label)
+        ofxXRSToggle(std::string label, bool checked = false) : ofxXRSButton(label)
         {
             mChecked = checked;
             mType = ofxXRSType::TOGGLE;
@@ -163,8 +163,8 @@ class ofxXRSToggle : public ofxXRSButton {
     
     private:
         bool mChecked;
-        shared_ptr<ofImage> radioOn;
-        shared_ptr<ofImage> radioOff;
+        std::shared_ptr<ofImage> radioOn;
+        std::shared_ptr<ofImage> radioOff;
         ofParameter<bool>* mParamB = nullptr;
 
         void onParamB(bool& b) {

@@ -1,4 +1,10 @@
 #pragma once
+#include <memory>
+#include <memory>
+#include <memory>
+#include <memory>
+#include <memory>
+
 #include "ofMain.h"
 #include "ofxSmartFont.h"
 
@@ -218,25 +224,25 @@ class ofxXRSTheme{
         typography & icons
     */
     
-        static string AssetPath;
+        static std::string AssetPath;
     
         struct {
             int size = 6;
-            string file = AssetPath + "ofxXRS_img/fonts/Aeonik.ttf";
-            shared_ptr<ofxSmartFont> ptr;
+            std::string file = AssetPath + "ofxXRS_img/fonts/Aeonik.ttf";
+            std::shared_ptr<ofxSmartFont> ptr;
         } font;
     
         struct{
-            shared_ptr<ofImage> rainbow = make_shared<ofImage>();
-            shared_ptr<ofImage> radioOn = make_shared<ofImage>();
-            shared_ptr<ofImage> radioOff = make_shared<ofImage>();
-            shared_ptr<ofImage> groupOpen = make_shared<ofImage>();
-            shared_ptr<ofImage> groupClosed = make_shared<ofImage>();
-            string rainbowPath = AssetPath + "ofxXRS_img/icons/picker-rainbow.png";
-            string radioOnPath = AssetPath + "ofxXRS_img/icons/icon-radio-on.png";
-            string radioOffPath = AssetPath + "ofxXRS_img/icons/icon-radio-off.png";
-            string groupOpenPath = AssetPath + "ofxXRS_img/icons/icon-group-open.png";
-            string groupClosedPath = AssetPath + "ofxXRS_img/icons/icon-group-closed.png";
+	        std::shared_ptr<ofImage> rainbow = std::make_shared<ofImage>();
+	        std::shared_ptr<ofImage> radioOn = std::make_shared<ofImage>();
+	        std::shared_ptr<ofImage> radioOff = std::make_shared<ofImage>();
+	        std::shared_ptr<ofImage> groupOpen = std::make_shared<ofImage>();
+	        std::shared_ptr<ofImage> groupClosed = std::make_shared<ofImage>();
+	        std::string rainbowPath = AssetPath + "ofxXRS_img/icons/picker-rainbow.png";
+	        std::string radioOnPath = AssetPath + "ofxXRS_img/icons/icon-radio-on.png";
+	        std::string radioOffPath = AssetPath + "ofxXRS_img/icons/icon-radio-off.png";
+	        std::string groupOpenPath = AssetPath + "ofxXRS_img/icons/icon-group-open.png";
+	        std::string groupClosedPath = AssetPath + "ofxXRS_img/icons/icon-group-closed.png";
         } icon;
 
         static ofColor hex(int n)

@@ -5,20 +5,20 @@
 
 namespace ofxXRSMsg
 {
-    const string EVENT_HANDLER_NULL = "[WARNING] :: Event Handler Not Set";
-    const string COMPONENT_NOT_FOUND = "[ERROR] :: Component Not Found";
-    const string MATRIX_EMPTY = "[WARNING] :: Matrix is Empty";
+    const std::string EVENT_HANDLER_NULL = "[WARNING] :: Event Handler Not Set";
+    const std::string COMPONENT_NOT_FOUND = "[ERROR] :: Component Not Found";
+    const std::string MATRIX_EMPTY = "[WARNING] :: Matrix is Empty";
 }
 
 class ofxXRSLog {
 
     public:
-        static void write(string m1, string m2="")
+        static void write(std::string m1, std::string m2="")
         {
             if (!mQuiet) {
-                cout << m1;
-                if (m2!="") cout << " : " << m2;
-                cout << endl;
+	            std::cout << m1;
+                if (m2!="") std::cout << " : " << m2;
+	            std::cout << std::endl;
             }
         }
         static void quiet()

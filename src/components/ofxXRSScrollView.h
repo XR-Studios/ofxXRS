@@ -7,7 +7,7 @@ class ofxXRSScrollViewItem : public ofxXRSButton {
 
     public:
    
-        ofxXRSScrollViewItem(string label, int index) : ofxXRSButton(label)
+        ofxXRSScrollViewItem(std::string label, int index) : ofxXRSButton(label)
         {
             mIndex = index;
         }
@@ -27,7 +27,7 @@ class ofxXRSScrollView : public ofxXRSComponent {
 
     public:
     
-        ofxXRSScrollView(string name, int nVisible = 6) : ofxXRSComponent(name)
+        ofxXRSScrollView(std::string name, int nVisible = 6) : ofxXRSComponent(name)
         {
             mAutoHeight = true;
             mNumVisible = nVisible;
@@ -45,7 +45,7 @@ class ofxXRSScrollView : public ofxXRSComponent {
         list manipulation
     */
     
-        void add(string label)
+        void add(std::string label)
         {
             int y = 0;
             if (mItems.size() > 0) y = mItems.back()->getY() + mItems.back()->getHeight() + mSpacing;
@@ -64,7 +64,7 @@ class ofxXRSScrollView : public ofxXRSComponent {
             return mItems[index];
         }
     
-        ofxXRSScrollViewItem* getItemByName(string name)
+        ofxXRSScrollViewItem* getItemByName(std::string name)
         {
             for(auto i:mItems) if (i->is(name)) return i;
             return nullptr;
@@ -85,14 +85,14 @@ class ofxXRSScrollView : public ofxXRSComponent {
                 auto itr_to = mItems.begin() + to;
                 if (itr_from < itr_to ) {
                 // move down //
-                    rotate(itr_from, itr_from+1, itr_to+1);
+                std::rotate(itr_from, itr_from+1, itr_to+1);
                 } else if (itr_from > itr_to) {
                 // move up //
-                    rotate(itr_to, itr_from, itr_from+1);
+                std::rotate(itr_to, itr_from, itr_from+1);
                 }
                 positionItems();
             }   else {
-                cout << "invalid move operation, check your indices" << endl;
+	            std::cout << "invalid move operation, check your indices" << std::endl;
             }
         }
     
@@ -255,7 +255,7 @@ class ofxXRSScrollView : public ofxXRSComponent {
         int mSpacing;
         int mNumVisible;
         bool mAutoHeight;
-        vector<ofxXRSScrollViewItem*> mItems;
+        std::vector<ofxXRSScrollViewItem*> mItems;
         ofxXRSScrollViewItem* mLastItemSelected;
     
         void autoSize()

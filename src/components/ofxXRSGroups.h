@@ -36,7 +36,7 @@ class ofxXRSGroup : public ofxXRSButton {
 
     public:
     
-        ofxXRSGroup(string label) : ofxXRSButton(label), mHeight(0)
+        ofxXRSGroup(std::string label) : ofxXRSButton(label), mHeight(0)
         {
             mIsExpanded = false;
             layout();
@@ -156,8 +156,8 @@ class ofxXRSGroup : public ofxXRSButton {
         }
     
         int mHeight;
-        shared_ptr<ofImage> mIconOpen;
-        shared_ptr<ofImage> mIconClosed;
+        std::shared_ptr<ofImage> mIconOpen;
+        std::shared_ptr<ofImage> mIconClosed;
         bool mIsExpanded;
     
 };
@@ -166,7 +166,7 @@ class ofxXRSFolder : public ofxXRSGroup {
 
     public:
     
-        ofxXRSFolder(string label, ofColor color = ofColor::white) : ofxXRSGroup(label)
+        ofxXRSFolder(std::string label, ofColor color = ofColor::white) : ofxXRSGroup(label)
         {
         // all items within a folder share the same stripe color //
             mStyle.stripe.color = color;
@@ -267,7 +267,7 @@ class ofxXRSFolder : public ofxXRSGroup {
         component add methods
     */
 
-        ofxXRSLabel* addLabel(string label)
+        ofxXRSLabel* addLabel(std::string label)
         {
             ofxXRSLabel* lbl = new ofxXRSLabel(label);
             lbl->setStripeColor(mStyle.stripe.color);
@@ -275,7 +275,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return lbl;
         }
 
-        ofxXRSButton* addButton(string label)
+        ofxXRSButton* addButton(std::string label)
         {
             ofxXRSButton* button = new ofxXRSButton(label);
             button->setStripeColor(mStyle.stripe.color);
@@ -284,7 +284,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return button;
         }
     
-        ofxXRSToggle* addToggle(string label, bool enabled = false)
+        ofxXRSToggle* addToggle(std::string label, bool enabled = false)
         {
             ofxXRSToggle* toggle = new ofxXRSToggle(label, enabled);
             toggle->setStripeColor(mStyle.stripe.color);
@@ -293,13 +293,13 @@ class ofxXRSFolder : public ofxXRSGroup {
             return toggle;
         }
     
-        ofxXRSSlider* addSlider(string label, float min, float max)
+        ofxXRSSlider* addSlider(std::string label, float min, float max)
         {
             ofxXRSSlider* slider = addSlider(label, min, max, (max+min)/2);
             return slider;
         }
 
-        ofxXRSSlider* addSlider(string label, float min, float max, double val)
+        ofxXRSSlider* addSlider(std::string label, float min, float max, double val)
         {
             ofxXRSSlider* slider = new ofxXRSSlider(label, min, max, val);
             slider->setStripeColor(mStyle.stripe.color);
@@ -324,7 +324,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return slider;
         }
     
-        ofxXRSTextInput* addTextInput(string label, string value)
+        ofxXRSTextInput* addTextInput(std::string label, std::string value)
         {
             ofxXRSTextInput* input = new ofxXRSTextInput(label, value);
             input->setStripeColor(mStyle.stripe.color);
@@ -333,9 +333,9 @@ class ofxXRSFolder : public ofxXRSGroup {
             return input;
         }
     
-        ofxXRSColorPicker* addColorPicker(string label, ofColor color = ofColor::black)
+        ofxXRSColorPicker* addColorPicker(std::string label, ofColor color = ofColor::black)
         {
-            shared_ptr<ofxXRSColorPicker> picker(new ofxXRSColorPicker(label, color));
+	        std::shared_ptr<ofxXRSColorPicker> picker(new ofxXRSColorPicker(label, color));
             picker->setStripeColor(mStyle.stripe.color);
             picker->onColorPickerEvent(this, &ofxXRSFolder::dispatchColorPickerEvent);
             attachItem(picker.get());
@@ -358,7 +358,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return brk;
         }
     
-        ofxXRS2dPad* add2dPad(string label)
+        ofxXRS2dPad* add2dPad(std::string label)
         {
             ofxXRS2dPad* pad = new ofxXRS2dPad(label);
             pad->setStripeColor(mStyle.stripe.color);
@@ -367,7 +367,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return pad;
         }
 
-        ofxXRSMatrix* addMatrix(string label, int numButtons, bool showLabels = false)
+        ofxXRSMatrix* addMatrix(std::string label, int numButtons, bool showLabels = false)
         {
             ofxXRSMatrix* matrix = new ofxXRSMatrix(label, numButtons, showLabels);
             matrix->setStripeColor(mStyle.stripe.color);
@@ -376,7 +376,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return matrix;
         }
     
-        ofxXRSWaveMonitor* addWaveMonitor(string label, float frequency, float amplitude)
+        ofxXRSWaveMonitor* addWaveMonitor(std::string label, float frequency, float amplitude)
         {
             ofxXRSWaveMonitor* monitor = new ofxXRSWaveMonitor(label, frequency, amplitude);
             monitor->setStripeColor(mStyle.stripe.color);
@@ -384,7 +384,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             return monitor;
         }
     
-        ofxXRSValuePlotter* addValuePlotter(string label, float min, float max)
+        ofxXRSValuePlotter* addValuePlotter(std::string label, float min, float max)
         {
             ofxXRSValuePlotter* plotter = new ofxXRSValuePlotter(label, min, max);
             plotter->setStripeColor(mStyle.stripe.color);
@@ -399,7 +399,7 @@ class ofxXRSFolder : public ofxXRSGroup {
             children.push_back(item);
         }
     
-        ofxXRSComponent* getComponent(ofxXRSType type, string label)
+        ofxXRSComponent* getComponent(ofxXRSType type, std::string label)
         {
             for (size_t i=0; i<children.size(); i++) {
                 if (children[i]->getType() == type){
@@ -412,8 +412,7 @@ class ofxXRSFolder : public ofxXRSGroup {
         static ofxXRSFolder* getInstance() { return new ofxXRSFolder("X"); }
 
     protected:
-    
-        vector<shared_ptr<ofxXRSColorPicker>> pickers;
+        std::vector<std::shared_ptr<ofxXRSColorPicker>> pickers;
     
 };
 
@@ -421,7 +420,7 @@ class ofxXRSDropdownOption : public ofxXRSButton {
 
     public:
     
-        ofxXRSDropdownOption(string label) : ofxXRSButton(label)
+        ofxXRSDropdownOption(std::string label) : ofxXRSButton(label)
         {
             mType = ofxXRSType::DROPDOWN_OPTION;
             setTheme(ofxXRSComponent::getTheme());
@@ -447,7 +446,7 @@ class ofxXRSDropdown : public ofxXRSGroup {
 
     public:
 
-        ofxXRSDropdown(string label, const vector<string>& options = vector<string>()) : ofxXRSGroup(label)
+        ofxXRSDropdown(std::string label, const std::vector<std::string>& options = std::vector<std::string>()) : ofxXRSGroup(label)
         {
             mOption = 0;
             mType = ofxXRSType::DROPDOWN;
@@ -503,7 +502,7 @@ class ofxXRSDropdown : public ofxXRSGroup {
             return static_cast<ofxXRSDropdownOption*>(children[mOption]);
         }
 
-		string getSelected() {
+        std::string getSelected() {
 			return getSelectedObj()->getLabel();
         }
     

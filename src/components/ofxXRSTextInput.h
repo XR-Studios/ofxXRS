@@ -6,7 +6,7 @@ class ofxXRSTextInput : public ofxXRSComponent {
 
     public:
     
-        ofxXRSTextInput(string label, string text = "") : ofxXRSComponent(label)
+        ofxXRSTextInput(std::string label, std::string text = "") : ofxXRSComponent(label)
         {
             mInput.setText(text);
             mInput.onInternalEvent(this, &ofxXRSTextInput::onInputChanged);
@@ -14,7 +14,7 @@ class ofxXRSTextInput : public ofxXRSComponent {
             setTheme(ofxXRSComponent::getTheme());
         }
 
-        ofxXRSTextInput(ofParameter<string>& str) : ofxXRSTextInput(str.getName(), str.get()) {
+        ofxXRSTextInput(ofParameter<std::string>& str) : ofxXRSTextInput(str.getName(), str.get()) {
             mParamStr = &str;
             mParamStr->addListener(this, &ofxXRSTextInput::onParamStr);
         }
@@ -40,12 +40,12 @@ class ofxXRSTextInput : public ofxXRSComponent {
             mInput.setPosition(x + mLabel.width, y + mStyle.padding);
         }
     
-        void setText(string text)
+        void setText(std::string text)
         {
             mInput.setText(text);
         }
-    
-        string getText()
+
+        std::string getText()
         {
             return mInput.getText();
         }
@@ -124,12 +124,12 @@ class ofxXRSTextInput : public ofxXRSComponent {
             dispatchTextInputEvent();
         }
 
-        void onParamStr(string& str) {
+        void onParamStr(std::string& str) {
             setText(str);
         }
     
         ofxXRSTextInputField mInput;
-        ofParameter<string>* mParamStr;
+        ofParameter<std::string>* mParamStr;
     
 };
 

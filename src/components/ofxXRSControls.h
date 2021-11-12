@@ -5,7 +5,7 @@ class ofxXRSHeader : public ofxXRSButton {
 
     public:
 
-        ofxXRSHeader(string label, bool draggable = true) : ofxXRSButton(label)
+        ofxXRSHeader(std::string label, bool draggable = true) : ofxXRSButton(label)
         {
             mDraggable = draggable;
             setTheme(ofxXRSComponent::getTheme());
@@ -91,13 +91,13 @@ class ofxXRSFooter : public ofxXRSButton {
             setLabelAlignment(ofxXRSAlignment::CENTER);
         }
     
-        void setLabelWhenExpanded(string label)
+        void setLabelWhenExpanded(std::string label)
         {
             mLabelExpanded = label;
             if (mGuiExpanded) setLabel(mLabelExpanded);
         }
     
-        void setLabelWhenCollapsed(string label)
+        void setLabelWhenCollapsed(std::string label)
         {
             mLabelCollapsed = label;
             if (!mGuiExpanded) setLabel(mLabelCollapsed);
@@ -131,7 +131,7 @@ class ofxXRSFooter : public ofxXRSButton {
     
     private:
         bool mGuiExpanded;
-        string mLabelExpanded;
-        string mLabelCollapsed;
+        std::string mLabelExpanded;
+        std::string mLabelCollapsed;
     
 };
