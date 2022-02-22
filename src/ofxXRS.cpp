@@ -11,6 +11,13 @@ ofxXRSPanel::ofxXRSPanel(int x, int y)
     init();
 }
 
+ofxXRSPanel::ofxXRSPanel(float x, float y) {
+	mPosition.x = x;
+	mPosition.y = y;
+	mAnchor = ofxXRSPanelAnchor::NO_ANCHOR;
+	init();
+}
+
 ofxXRSPanel::ofxXRSPanel(ofxXRSPanelAnchor anchor)
 {
     init();

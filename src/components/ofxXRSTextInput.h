@@ -8,6 +8,7 @@ class ofxXRSTextInput : public ofxXRSComponent {
     
         ofxXRSTextInput(std::string label, std::string text = "") : ofxXRSComponent(label)
         {
+			mParamStr = nullptr;
             mInput.setText(text);
             mInput.onInternalEvent(this, &ofxXRSTextInput::onInputChanged);
             mType = ofxXRSType::TEXT_INPUT;

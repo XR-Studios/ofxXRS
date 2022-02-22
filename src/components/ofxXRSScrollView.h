@@ -45,18 +45,25 @@ class ofxXRSScrollView : public ofxXRSComponent {
         list manipulation
     */
     
-        void add(std::string label)
+        void add(std::string label, bool onTop = false)
         {
             int y = 0;
             if (mItems.size() > 0) y = mItems.back()->getY() + mItems.back()->getHeight() + mSpacing;
-            mItems.push_back(new ofxXRSScrollViewItem( label, mItems.size() ));
-            mItems.back()->setMask(mRect);
-            mItems.back()->setTheme(mTheme);
-            mItems.back()->setWidth(mRect.width, 0);
-            mItems.back()->setPosition(0, y);
-            mItems.back()->onButtonEvent(this, &ofxXRSScrollView::onButtonEvent);
-        //  cout << "ofxXRSScrollView :: total items = " << mItems.size() << endl;
+			ofxXRSScrollViewItem* newItem = new ofxXRSScrollViewItem(label, mItems.size());
+            newItem->setMask(mRect);
+            newItem->setTheme(mTheme);
+            newItem->setWidth(mRect.width, 0);
+            newItem->onButtonEvent(this, &ofxXRSScrollView::onButtonEvent);
+			if (!onTop) {
+				mItems.push_back(newItem);
+			} else {
+				mItems.emplace(mItems.begin(), newItem);
+			}
             if (mAutoHeight) autoSize();
+			for(size_t i = 0; i < mItems.size(); i++) {
+				mItems[i]->mIndex = i;
+				mItems[i]->setPosition(0, i * mItems.back()->getHeight());
+			}
         }
     
         ofxXRSScrollViewItem* getItemAtIndex(int index)

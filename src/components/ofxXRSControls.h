@@ -15,7 +15,7 @@ class ofxXRSHeader : public ofxXRSButton {
         {
             setComponentStyle(theme);
             mLabel.width = mStyle.width;
-            mStyle.stripe.visible = false;
+            mStyle.stripe.visible = theme->stripe.visible;
             mStyle.height = mStyle.height * .8;
             setLabelAlignment(ofxXRSAlignment::CENTER);
         }

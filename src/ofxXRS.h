@@ -10,6 +10,7 @@ class ofxXRSPanel : public ofxXRSInteractiveObject
     public:
     
         ofxXRSPanel(int x, int y);
+		ofxXRSPanel(float x, float y);
         ofxXRSPanel(ofxXRSPanelAnchor anchor = ofxXRSPanelAnchor::TOP_LEFT);
         ~ofxXRSPanel();
     

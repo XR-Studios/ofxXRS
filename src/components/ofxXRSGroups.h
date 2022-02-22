@@ -275,6 +275,20 @@ class ofxXRSFolder : public ofxXRSGroup {
             return lbl;
         }
 
+		ofxXRSFolder* addFolder(std::string label) {
+			ofxXRSFolder* folder = new ofxXRSFolder(label, ofColor::white);
+			folder->onButtonEvent(this, &ofxXRSFolder::dispatchButtonEvent);
+			folder->onToggleEvent(this, &ofxXRSFolder::dispatchToggleEvent);
+			folder->onSliderEvent(this, &ofxXRSFolder::dispatchSliderEvent);
+			folder->on2dPadEvent(this, &ofxXRSFolder::dispatch2dPadEvent);
+			folder->onMatrixEvent(this, &ofxXRSFolder::dispatchMatrixEvent);
+			folder->onTextInputEvent(this, &ofxXRSFolder::dispatchTextInputEvent);
+			folder->onColorPickerEvent(this, &ofxXRSFolder::dispatchColorPickerEvent);
+			folder->onInternalEvent(this, &ofxXRSFolder::dispatchInternalEvent);
+			attachItem(folder);
+			return folder;
+        }
+
         ofxXRSButton* addButton(std::string label)
         {
             ofxXRSButton* button = new ofxXRSButton(label);
@@ -457,6 +471,7 @@ class ofxXRSDropdown : public ofxXRSGroup {
                 children.push_back(opt);
             }
             setTheme(ofxXRSComponent::getTheme());
+			originalLabel = label;
         }
     
         void setTheme(const ofxXRSTheme* theme)
@@ -483,8 +498,19 @@ class ofxXRSDropdown : public ofxXRSGroup {
             if (cIndex < 0 || i >= children.size()){
                 ofLogError() << "ofxXRSDropdown->select("<<cIndex<<") is out of range";
             }   else{
-                setLabel(children[cIndex]->getLabel());
+				std::string newLabel = originalLabel + ": " + children[cIndex]->getLabel();
+                setLabel(newLabel);
             }
+        }
+
+		void setOptions(const std::vector<std::string> options) {
+			children.clear();
+			for(size_t i = 0; i < options.size(); i++) {
+				ofxXRSDropdownOption* opt = new ofxXRSDropdownOption(options[i]);
+				opt->setIndex(children.size());
+				opt->onButtonEvent(this, &ofxXRSDropdown::onOptionSelected);
+				children.push_back(opt);
+			}
         }
 
         int size()
@@ -523,13 +549,14 @@ class ofxXRSDropdown : public ofxXRSGroup {
         void onOptionSelected(ofxXRSButtonEvent e)
         {
             for(size_t i=0; i<children.size(); i++) if (e.target == children[i]) mOption = i;
-            setLabel(children[mOption]->getLabel());
+			std::string newLabel = originalLabel + ": " + children[mOption]->getLabel();
+            setLabel(newLabel);
            	collapse();
             dispatchEvent();
         }
     
         int mOption;
-    
+		std::string originalLabel;
 };
 
 

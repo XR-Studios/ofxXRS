@@ -369,11 +369,12 @@ class ofxXRSMatrix : public ofxXRSComponent {
     
         void onButtonSelected(ofxXRSInternalEvent e)
         {
+            size_t index = e.index;
             if (mRadioMode) {
         // deselect all buttons save the one that was selected //
-                for(size_t i=0; i<btns.size(); i++) btns[i].setSelected(e.index == i);
+                for(size_t i=0; i<btns.size(); i++) btns[i].setSelected(index == i);
             }
-			if (btns.size() > e.index) {
+			if (btns.size() > index) {
 				mLastItemSelected = &btns.at(e.index);
 			}
             dispatchEvent();
@@ -384,8 +385,9 @@ class ofxXRSMatrix : public ofxXRSComponent {
 			std::vector<std::string> oldLabels = labels;
         	btns.clear();
 			labels.clear();
+            size_t size = mNumButtons;
 
-        	for (size_t i = 0; i < mNumButtons; i++) {
+        	for (size_t i = 0; i < size; i++) {
 				if (i < oldLabels.size()) {
 					ofxXRSMatrixButton btn(mButtonSize, i, mShowLabels, oldLabels.at(i));
 					btn.setTheme(theme);
@@ -401,6 +403,7 @@ class ofxXRSMatrix : public ofxXRSComponent {
 				}
         	}
 
+            /* Debug Logging
 			std::cout << "============" << std::endl;
 			std::cout << "OLDLABELS: " << std::endl;
 			for (auto& label : oldLabels) {
@@ -411,6 +414,7 @@ class ofxXRSMatrix : public ofxXRSComponent {
 				std::cout << label << std::endl;
 			}
 			std::cout << "==========" << std::endl;
+			*/
 
 			
         }
